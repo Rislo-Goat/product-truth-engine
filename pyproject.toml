@@ -1,0 +1,13 @@
+[project]
+name = "jarvis-ecommerce-os"
+version = "0.1.0"
+description = "JARVIS Ecommerce OS — sourcing intelligence, product truth & agentic orchestration"
+requires-python = ">=3.11"
+dynamic = ["dependencies"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
