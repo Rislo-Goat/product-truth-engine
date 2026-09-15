@@ -8,5 +8,6 @@ COPY requirements.txt .
 RUN pip install -r requirements.txt
 COPY . .
 EXPOSE 8000
-# Le port est fourni par Railway via $PORT.
-CMD ["sh", "-c", "uvicorn jarvis_os.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
+# Port FIXE 8000, aligné avec EXPOSE et le port cible par défaut du domaine Railway.
+# (Évite le 502 quand Railway route le domaine vers 8000 mais injecte un PORT différent.)
+CMD ["uvicorn", "jarvis_os.main:app", "--host", "0.0.0.0", "--port", "8000"]
