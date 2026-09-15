@@ -25,10 +25,28 @@ def main() -> int:
         from rq import Queue, Worker
     except Exception as e:  # pragma: no cover
         print(f"[worker] dépendances RQ manquantes: {e}")
-        return 1
+        return 0
+    # REDIS_URL est défini : on vérifie que Redis est JOIGNABLE avant de lancer RQ.
+    # S'il ne l'est pas (pas de base Redis provisionnée / URL erronée), on NE fait
+    # PAS échouer le déploiement en boucle : message clair + sortie propre. Les jobs
+    # continuent de tourner in-process dans le service `web`.
+    import time
     conn = Redis.from_url(s.redis_url)
+    for attempt in range(5):
+        try:
+            conn.ping()
+            break
+        except Exception as e:  # pragma: no cover
+            if attempt == 4:
+                print("[worker] Redis injoignable (REDIS_URL défini mais aucune base Redis "
+                      f"joignable) : {e}. Ajoute une base Redis dans Railway et relie sa "
+                      "variable REDIS_URL au service worker, ou retire REDIS_URL/supprime le "
+                      "service worker (les jobs tournent déjà in-process dans `web`). "
+                      "Sortie propre — pas d'échec de déploiement.")
+                return 0
+            time.sleep(2)
     q = Queue("sourcing", connection=conn)
-    print("[worker] démarrage RQ sur la file 'sourcing'")
+    print("[worker] Redis OK — démarrage RQ sur la file 'sourcing'")
     Worker([q], connection=conn).work(with_scheduler=True)
     return 0
 

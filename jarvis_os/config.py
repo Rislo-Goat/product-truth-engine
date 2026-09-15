@@ -25,8 +25,11 @@ class Settings(BaseSettings):
     kwseo_base_url: str | None = None
     kwseo_token: str | None = None
 
-    # LLM (optionnel)
+    # LLM multi-provider (optionnel ; sans clé => provider AUTH_REQUIRED)
     anthropic_api_key: str | None = None
+    openai_api_key: str | None = None
+    google_api_key: str | None = None
+    model_catalog_json: str | None = None   # override du catalogue (voir ai/catalog.py)
     jarvis_llm_model: str = "claude-opus-4-8"
 
     @property

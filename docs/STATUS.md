@@ -53,3 +53,22 @@ Légende : ✅ réel & testé · 🟡 partiel/prêt · 🔴 pas commencé.
 - L'extraction d'attributs est à base de règles (lexique reborn dolls) : robuste et
   déterministe, mais à étendre par catégorie et éventuellement à assister par LLM
   (extraction structurée) — sans jamais inférer une matière par la seule image (§18).
+
+## Multi-Model Router (spec §1-§22) — ajouté
+
+| Élément | Module | État |
+|---|---|---|
+| Model Registry (catalogue vivant + dispo temps réel) | `ai/registry.py`, `ai/catalog.py` | ✅ réel + testé |
+| Model Router (scoring par tier/capacités/coût/perf) | `ai/router.py` | ✅ réel + testé |
+| Provider abstraction + adapters OpenAI/Anthropic/Gemini | `ai/providers.py` | ✅ (APIs officielles ; AUTH_REQUIRED sans clé) |
+| Stratégies single/parallel/critic/ensemble/fallback | `ai/runner.py` | ✅ réel + testé |
+| Disagreement engine (résolu par PREUVES, pas au vote) | `ai/disagreement.py` | ✅ réel + testé |
+| Perf historique (alimente le router) | `ai/performance.py` | ✅ |
+| Benchmark harness | `ai/benchmark.py` | 🟡 réel ; exécution = credentials requis |
+| API transparente `/models`, `/models/route`, `/performance`, `/benchmark` | `api/routes_models.py` | ✅ + testé |
+
+Principes tenus : **le LLM n'est pas JARVIS** (moteurs cognitifs interchangeables) ;
+**evidence-first** (la vérité vient des données, pas de « le modèle a dit ») ;
+**model-agnostic** (ajouter un provider = 1 classe + 1 entrée, aucun agent modifié) ;
+**transparent** (le router explique son choix). Ajout d'un modèle/param à chaud via
+`MODEL_CATALOG_JSON` ou `ModelRegistry.upsert/update_metadata`.
