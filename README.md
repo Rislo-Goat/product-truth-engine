@@ -22,8 +22,11 @@ Q4 et **zéro hallucination** (spec §79 : ce qui n'est pas vérifié reste `UNK
 | Scoring séparé + final (poids configurables, hard blocks) | `engines/scoring.py` | ✅ réel + testé |
 | Pipeline PRODUCT→SUPPLIER explicable | `engines/sourcing_pipeline.py` | ✅ réel + testé |
 | API + jobs async (fallback in-process) | `api/`, `jobs/` | ✅ réel + testé |
+| **Multi-Model Router** (registry + routing par tâche) | `ai/router.py`, `ai/registry.py` | ✅ réel + testé |
+| Providers OpenAI/Anthropic/Gemini (abstraction) | `ai/providers.py` | ✅ (AUTH_REQUIRED sans clé) |
+| Stratégies single/critic/ensemble/fallback + disagreement par preuves | `ai/runner.py`, `ai/disagreement.py` | ✅ réel + testé |
 
-**16 tests passent** (`pytest`). Aucune donnée n'est inventée.
+**30 tests passent** (`pytest`). Aucune donnée n'est inventée.
 
 ## Ce qui est explicitement en attente (honnête — spec §71, §76)
 

@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from fastapi import FastAPI
 
-from .api import routes_health, routes_sourcing
+from .api import routes_health, routes_models, routes_sourcing
 from .config import get_settings
 
 app = FastAPI(
@@ -19,6 +19,7 @@ app = FastAPI(
 
 app.include_router(routes_health.router)
 app.include_router(routes_sourcing.router)
+app.include_router(routes_models.router)
 
 
 @app.get("/")
