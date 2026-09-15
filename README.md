@@ -26,7 +26,20 @@ Q4 et **zéro hallucination** (spec §79 : ce qui n'est pas vérifié reste `UNK
 | Providers OpenAI/Anthropic/Gemini (abstraction) | `ai/providers.py` | ✅ (AUTH_REQUIRED sans clé) |
 | Stratégies single/critic/ensemble/fallback + disagreement par preuves | `ai/runner.py`, `ai/disagreement.py` | ✅ réel + testé |
 
-**30 tests passent** (`pytest`). Aucune donnée n'est inventée.
+**34 tests passent** (`pytest`). Aucune donnée n'est inventée.
+
+## Dashboard connecté (analyse boutiques temps réel)
+L'app se branche à tes boutiques Shopify et les analyse en direct (risque de litige,
+cohérence des fiches, revendications non étayées) — spec §67, §81.
+
+1. Variable Railway `SHOPIFY_STORES` (JSON) :
+```json
+[{"name":"Kim","domain":"xxxx.myshopify.com","token":"shpat_...","category":"reborn_doll"}]
+```
+2. Ouvre `/` (dashboard) → choisis une boutique → **Analyser en direct**.
+
+Endpoints : `GET /stores`, `GET /stores/{name}/products`, `POST /stores/{name}/audit`.
+
 
 ## Ce qui est explicitement en attente (honnête — spec §71, §76)
 
